@@ -1,0 +1,10 @@
+FROM openjdk
+
+WORKDIR /opt/jackson
+
+COPY target/SpringDockerExample-0.0.1-SNAPSHOT.jar SpringDockerExample-0.0.1-SNAPSHOT.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "SpringDockerExample-0.0.1-SNAPSHOT.jar"]
+

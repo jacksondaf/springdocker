@@ -1,0 +1,9 @@
+FROM openjdk
+
+WORKDIR /home/hello
+
+COPY target/SpringDockerExample-0.0.1-SNAPSHOT.jar helloDocker.jar
+
+VOLUME /logs
+
+ENTRYPOINT ["java", "-jar", "helloDocker.jar"]
