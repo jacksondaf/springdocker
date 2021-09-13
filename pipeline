@@ -1,0 +1,33 @@
+node {
+
+    stage("Git Clone"){
+
+        git credentialsId: 'GIT_HUB_CREDENTIALS', url: 'https://github.com/jacksondaf/springdocker.git'
+    }
+
+     stage('Maven Build') {
+
+       sh 'mvn clean package'
+
+    }
+
+    stage("Docker build"){
+        sh 'docker version'
+        sh 'docker build -t springdocker .'
+        sh 'docker image list'
+        sh 'docker tag springdocker jacksondaf/springdocker:2'
+    }
+
+    withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'PASSWORD')]) {
+        sh 'docker login -u jacksondaf -p $PASSWORD'
+    }
+
+    stage("Push Image to Docker Hub"){
+        sh 'docker push  jacksondaf/springdocker:2'
+    }
+
+    stage("Kubernetes deploy"){
+     sh 'kubectl apply -f deployment.yaml'
+    }
+
+}
