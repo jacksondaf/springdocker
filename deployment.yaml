@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myspringbootapp-deployment
+  labels:
+    app: myspringbootapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myspringbootapp
+  template:
+    metadata:
+      labels: 
+        app: myspringbootapp
+    spec:
+      containers:
+        - name: springdockerimage
+          image: jacksondaf/springdocker
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myspringbootapp-service
+  labels:
+    app: myspringbootapp
+spec:
+  selector:
+    app: myspringbootapp
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30080
